@@ -16,7 +16,7 @@ export function MovieDetails({ movie }) {
             : defaultImg
         }
         alt={movie.original_title}
-      ></img>
+      />
       <h2>
         {movie.original_title} ({movie.release_date.substring(0, 4)})
       </h2>
@@ -30,10 +30,10 @@ export function MovieDetails({ movie }) {
       <p>Additional information</p>
       <ul>
         <li>
-          <Link to={`/movies/${movie.id}/cast`}>Cast</Link>
+          <Link to={`cast`}>Cast</Link>
         </li>
         <li>
-          <Link to={`/movies/${movie.id}/reviews`}>Reviews</Link>
+          <Link to={`reviews`}>Reviews</Link>
         </li>
       </ul>
       <Suspense fallback={<div>Loading...</div>}>
