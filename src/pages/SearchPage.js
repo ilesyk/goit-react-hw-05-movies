@@ -17,7 +17,7 @@ const Movies = () => {
     async function getMoviesByQuery() {
       try {
         const movies = await fetchMovieByQuery(query, {
-          signal: controller.current.signal,
+          signal: controller.signal,
         });
         setSearchedMovies(movies);
       } catch (error) {

@@ -11,7 +11,7 @@ const Movie = () => {
     async function getMovieById() {
       try {
         const movie = await fetchMovieById(params.movieId, {
-          signal: controller.current.signal,
+          signal: controller.signal,
         });
         setClickedMovie(movie);
       } catch (error) {

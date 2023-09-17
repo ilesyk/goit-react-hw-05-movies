@@ -1,5 +1,5 @@
 import { fetchMovieCast } from 'api';
-import { useEffect,  useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const Cast = () => {
@@ -12,7 +12,7 @@ const Cast = () => {
     async function getMovieCast() {
       try {
         const movieCast = await fetchMovieCast(params.movieId, {
-          signal: controller.current.signal,
+          signal: controller.signal,
         });
         setCast(movieCast.cast);
       } catch (error) {

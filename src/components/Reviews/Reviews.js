@@ -10,7 +10,7 @@ const Reviews = () => {
     async function getMovieReviews() {
       try {
         const movieReviews = await fetchMovieReviews(params.movieId, {
-          signal: controller.current.signal,
+          signal: controller.signal,
         });
         setReviews(movieReviews.results);
       } catch (error) {
