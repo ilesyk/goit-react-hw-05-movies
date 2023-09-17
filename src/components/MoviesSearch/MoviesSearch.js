@@ -11,10 +11,15 @@ export function MoviesSearch() {
   const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
-    if (!hasSearched) {
-      getMoviesByQuery(query);
-      setHasSearched(true);
-    }
+    const fetchData = async () => {
+      if (!hasSearched) {
+        await getMoviesByQuery(query);
+        setHasSearched(true);
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, hasSearched]);
   async function getMoviesByQuery() {
     if (controllerRef.current) {
