@@ -1,15 +1,10 @@
-import { MoviesSearch } from "components/MoviesSearch/MoviesSearch";
-import { fetchMovieByQuery} from 'api';
-import { useRef, useState } from "react";
+import { MoviesSearch } from 'components/MoviesSearch/MoviesSearch';
 
-
-
-export function Movies() {
-    
-
+const Movies = () => {
   return (
     <div>
-          <MoviesSearch  />
+      <MoviesSearch />
     </div>
   );
-}
+};
+export default Movies;
