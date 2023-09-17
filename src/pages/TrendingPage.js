@@ -1,19 +1,15 @@
 import { fetchTrendingMovies } from 'api';
 import { MoviesList } from 'components/MoviesList/MoviesList';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect,  useState } from 'react';
 
 export function Trending() {
   const [trendingMovies, setTrendingMovies] = useState([]);
-  const controllerRef = useRef();
   useEffect(() => {
+    const controller = new AbortController();
     async function getTrendingMovies() {
-      if (controllerRef.current) {
-        controllerRef.current.abort();
-      }
-      controllerRef.current = new AbortController();
       try {
         const topMovies = await fetchTrendingMovies({
-          signal: controllerRef.current.signal,
+          signal: controller.current.signal,
         });
         setTrendingMovies(topMovies);
       } catch (error) {
@@ -21,6 +17,9 @@ export function Trending() {
       }
     }
     getTrendingMovies();
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (

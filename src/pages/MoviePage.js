@@ -1,21 +1,17 @@
 import { fetchMovieById } from 'api';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MovieDetails } from 'components/MovieDetails/MovieDetails';
 import { useParams } from 'react-router-dom';
 
 const Movie = () => {
   const params = useParams();
   const [clickedMovie, setClickedMovie] = useState(null);
-  const controllerRef = useRef();
   useEffect(() => {
+    const controller = new AbortController();
     async function getMovieById() {
-      if (controllerRef.current) {
-        controllerRef.current.abort();
-      }
-      controllerRef.current = new AbortController();
       try {
         const movie = await fetchMovieById(params.movieId, {
-          signal: controllerRef.current.signal,
+          signal: controller.current.signal,
         });
         setClickedMovie(movie);
       } catch (error) {
@@ -23,6 +19,9 @@ const Movie = () => {
       }
     }
     getMovieById();
+    return () => {
+      controller.abort();
+    };
   }, [params.movieId]);
   return <div>{clickedMovie && <MovieDetails movie={clickedMovie} />}</div>;
 };

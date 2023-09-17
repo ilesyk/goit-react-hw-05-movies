@@ -1,20 +1,16 @@
 import { fetchMovieReviews } from 'api';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const Reviews = () => {
   const params = useParams();
   const [reviews, setReviews] = useState(null);
-  const controllerRef = useRef();
   useEffect(() => {
+    const controller = new AbortController();
     async function getMovieReviews() {
-      if (controllerRef.current) {
-        controllerRef.current.abort();
-      }
-      controllerRef.current = new AbortController();
       try {
         const movieReviews = await fetchMovieReviews(params.movieId, {
-          signal: controllerRef.current.signal,
+          signal: controller.current.signal,
         });
         setReviews(movieReviews.results);
       } catch (error) {
@@ -22,6 +18,9 @@ const Reviews = () => {
       }
     }
     getMovieReviews(params.movieId);
+    return () => {
+      controller.abort();
+    };
   }, [params.movieId]);
 
   return (

@@ -1,5 +1,5 @@
 import { fetchMovieCast } from 'api';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect,  useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const Cast = () => {
@@ -7,16 +7,12 @@ const Cast = () => {
     'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
   const params = useParams();
   const [cast, setCast] = useState(null);
-  const controllerRef = useRef();
   useEffect(() => {
+    const controller = new AbortController();
     async function getMovieCast() {
-      if (controllerRef.current) {
-        controllerRef.current.abort();
-      }
-      controllerRef.current = new AbortController();
       try {
         const movieCast = await fetchMovieCast(params.movieId, {
-          signal: controllerRef.current.signal,
+          signal: controller.current.signal,
         });
         setCast(movieCast.cast);
       } catch (error) {
@@ -24,6 +20,9 @@ const Cast = () => {
       }
     }
     getMovieCast(params.movieId);
+    return () => {
+      controller.abort();
+    };
   }, [params.movieId]);
 
   return (
